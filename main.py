@@ -29,4 +29,4 @@ def new_color(new_color):
     return render_template('index.html', name=socket.gethostname(), color=color_codes[new_color])
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port="9090")
+    app.run(debug=True,host="0.0.0.0", port="9090")
