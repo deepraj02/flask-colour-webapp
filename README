@@ -1,0 +1,83 @@
+# Flask Serevr - Dockerised
+
+This is a simple Flask application that serves a webpage displaying the hostname and a color, 
+which can be changed by the user.
+
+## Getting Started
+
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
+
+### Prerequisites
+
+You need to have Docker installed on your machine to build and run the Docker image.
+
+### Installing
+
+Clone the repository to your local machine.
+
+### Building the Docker Image
+
+To build the Docker image, navigate to the directory containing the Dockerfile and run the following command:
+
+```sh
+docker build -t my_flask_app .
+```
+
+### Running the Docker Image
+To run the Docker image, use the following command:
+
+This command runs the Docker image you just built and maps port 9090 in the Docker container to port 9090 on your machine.
+
+```sh
+docker run -p 9090:9090 my_flask_app
+```
+
+## Code Explaination and Directory Structure
+
+```
+├── Dockerfile    
+├── README
+├── main.py
+├── requirements.txt
+└── templates
+    └── index.html
+```
+
+### main.py (Webserver code)
+
+- The color_codes dictionary contains the color codes that can be used to change the background color of the webpage.
+ ```python
+ color_codes = {
+    "red": "#e74c3c",
+    "green": "#16a085",
+    "blue": "#2980b9",
+    "blue2": "#30336b",
+    "pink": "#be2edd",
+    "darkblue": "#130f40"
+}
+ ```
+- The main function serves the index.html template and passes the hostname and color to the template.
+``` python
+@app.route("/")
+def main():
+    return render_template(
+    'index.html',
+     name=socket.gethostname(), 
+    color=color_codes[color]
+    )
+```
+- The new_color function serves the index.html template and allows the user to change the color by passing a new color to the template.
+```python
+@app.route('/color/<new_color>')
+def new_color(new_color):
+    return render_template(
+        'index.html', 
+        name=socket.gethostname(), 
+        color=color_codes[new_color]
+        )
+```
+### Endpoints:
+| Endpoint | Description |
+|----------|-------------|
+| `/`            | Returns the index page with the current color |
+| `/color/<new_color>`  | Returns the index page with a new color |
